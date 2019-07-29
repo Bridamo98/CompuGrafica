@@ -1,6 +1,6 @@
 //  introOpenGL.cpp
 //  Creado por Andrea Rueda, 01/2018
-//
+//	Modificado por Catalina Morales y Briam Agudelo
 #include <iostream>
 #include <GL/freeglut.h>
 #include <GL/gl.h>
@@ -105,13 +105,17 @@ void myInit (void) {
 
     glLoadIdentity();
 
-    gluOrtho2D(0, 640, 0, 480);
+    gluOrtho2D(0, 650, 0, 500);
     //glOrtho(0, 640, 0, 480, 1.0, -1.0);
 
 }
 
 void myDisplay (void) {
-    
+
+	float* rgbInterior = new float[3];
+    float* rgbExterior = new float[3];
+
+    //FONDO----------------------------
     glClear(GL_COLOR_BUFFER_BIT);
     glPointSize(4.0);
     glBegin(GL_POINTS);
@@ -125,13 +129,13 @@ void myDisplay (void) {
     glBegin(GL_POINTS);
     	fondo(0.0, 1.0, 0.8, 20, 10, -10);
     glEnd();
-    glPointSize(6.0);
+
+    //PELO DEL MUÑECO-------------------------------------------------------
+    glPointSize(7.0);
     glBegin(GL_POINTS);
-    	float* rgbInterior = new float[3];
     	rgbInterior[0]=0.78;
     	rgbInterior[1]=0.43;
     	rgbInterior[2]=0.02;
-    	float* rgbExterior = new float[3];
     	rgbExterior[0]=0.9;
     	rgbExterior[1]=0.43;
     	rgbExterior[2]=0.02;
@@ -148,6 +152,12 @@ void myDisplay (void) {
     	};
 		int yMax=44, yMin=12, xMax=50, xMin=16;
 		dibujar(cantPuntos,escala,puntosPrimeraCapa,yMax,yMin,xMax,xMin, rgbInterior, rgbExterior);
+    glEnd();
+
+    //RESTO DE PARTES DEL MUÑECO-------------------------------------------------------------
+    glPointSize(11.0);
+    glBegin(GL_POINTS);
+    	//BARBILLA---------------------------------------------------------
 	    rgbInterior[0]=1.0;
 	    rgbInterior[1]=0.97;
 	    rgbInterior[2]=0.86;
@@ -160,6 +170,7 @@ void myDisplay (void) {
 		};
 		yMax=14; yMin=12; xMax=36; xMin=32;
 		dibujar(cantPuntos,escala,puntosBarbilla,yMax,yMin,xMax,xMin, rgbInterior, rgbExterior);
+		//OREJA IZQUIERDA--------------------------------------------------
 	    rgbInterior[0]=1.0;
 	    rgbInterior[1]=0.97;
 	    rgbInterior[2]=0.86;
@@ -173,6 +184,7 @@ void myDisplay (void) {
 		};
 		yMax=38; yMin=33; xMax=23; xMin=18;
 		dibujar(cantPuntos,escala,puntosOrejaI,yMax,yMin,xMax,xMin, rgbInterior, rgbExterior);
+		//SOMBRA DE OREJA IZQUIERDA---------------------------------------------------------------
 	    rgbInterior[0]=0.54;
 	    rgbInterior[1]=0.21;
 	    rgbInterior[2]=0.06;
@@ -186,6 +198,7 @@ void myDisplay (void) {
 		};
 		yMax=38; yMin=34; xMax=24; xMin=20;
 		dibujar(cantPuntos,escala,puntossSombraI,yMax,yMin,xMax,xMin, rgbInterior, rgbExterior);
+		//OREJA DERECHA---------------------------------------------------------------------------
 		rgbInterior[0]=1.0;
 	    rgbInterior[1]=0.97;
 	    rgbInterior[2]=0.86;
@@ -199,6 +212,7 @@ void myDisplay (void) {
 		};
 		yMax=38; yMin=33; xMax=48; xMin=44;//
 		dibujar(cantPuntos,escala,puntosOrejaD,yMax,yMin,xMax,xMin, rgbInterior, rgbExterior);
+		//SOMBRA OREJA DERECHA-----------------------------------------------------------------------
 	    rgbInterior[0]=0.54;
 	    rgbInterior[1]=0.21;
 	    rgbInterior[2]=0.06;
@@ -212,6 +226,7 @@ void myDisplay (void) {
 		};
 		yMax=38; yMin=34; xMax=47; xMin=43;
 		dibujar(cantPuntos,escala,puntossSombraD,yMax,yMin,xMax,xMin, rgbInterior, rgbExterior);
+		//OJO IZQUIERDO-----------------------------------------------------------------------------------
 	    rgbInterior[0]=1.0;
 	    rgbInterior[1]=0.97;
 	    rgbInterior[2]=0.86;
@@ -223,8 +238,9 @@ void myDisplay (void) {
 			{25,28},{26,29},{27,29},{28,29},{29,28},{30,27},{30,26},{30,25},
 			{29,24},{28,23},{27,23},{26,23},{25,24},{24,25},{24,26},{24,27}
 		};
-		yMax=29; yMin=23; xMax=30; xMin=24;//
+		yMax=29; yMin=23; xMax=30; xMin=24;
 		dibujar(cantPuntos,escala,puntosOjoI,yMax,yMin,xMax,xMin, rgbInterior, rgbExterior);
+		//OJO DERECHO----------------------------------------------------------------------------------
 		cantPuntos = 16;
 		int puntosOjoD[cantPuntos][2]={
 			{40,28},{41,29},{42,29},{43,29},{44,28},{45,27},{45,26},{45,25},
@@ -232,6 +248,7 @@ void myDisplay (void) {
 		};
 		yMax=29; yMin=23; xMax=45; xMin=39;//
 		dibujar(cantPuntos,escala,puntosOjoD,yMax,yMin,xMax,xMin, rgbInterior, rgbExterior);
+		//SOMBRA NARIZ-----------------------------------------------------------------
 	    rgbInterior[0]=1.0;
 	    rgbInterior[1]=0.97;
 	    rgbInterior[2]=0.86;
@@ -245,6 +262,7 @@ void myDisplay (void) {
 		};
 		yMax=34; yMin=22; xMax=38; xMin=31;//
 		dibujar(cantPuntos,escala,puntosSombraNariz,yMax,yMin,xMax,xMin, rgbInterior, rgbExterior);
+		//BOCA--------------------------------------------------------------------------------
 	    rgbInterior[0]=0.54;
 	    rgbInterior[1]=0.21;
 	    rgbInterior[2]=0.06;
@@ -259,6 +277,7 @@ void myDisplay (void) {
 		};
 		yMax=22; yMin=12; xMax=40; xMin=28;//
 		dibujar(cantPuntos,escala,puntosBoca,yMax,yMin,xMax,xMin, rgbInterior, rgbExterior);
+		//NARIZ-------------------------------------------------------------------------------------
 	    rgbInterior[0]=0.37;
 	    rgbInterior[1]=0.15;
 	    rgbInterior[2]=0.07;
@@ -272,6 +291,16 @@ void myDisplay (void) {
 		yMax=20; yMin=18; xMax=37; xMin=33;
 		dibujar(cantPuntos,escala,puntosNariz,yMax,yMin,xMax,xMin, rgbInterior, rgbExterior);
     glEnd();
+
+    //PUPILAS--------------------------------------------------------------------------------------
+   	glPointSize(11.0);
+  	glBegin(GL_POINTS);
+  		glColor3f(0.0,0.0,0.0);
+       	glVertex2i(272.5, 262.5);
+       	glVertex2i(417.5, 262.5);
+   	glEnd();
+
+
     glFlush();
 }
 
