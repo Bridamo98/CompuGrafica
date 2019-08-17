@@ -13,6 +13,9 @@ using namespace std;
 int alto;
 int ancho;
 
+float signo, num;
+int dx=0,dy=0;
+
 // -------------------------------------------------------------------------
 struct WindowData
 {
@@ -61,12 +64,12 @@ void pintar(int** mat,int yMax,int xMin,int filas, int columnas, int escala, flo
 		for (int j = 0; j < columnas; ++j)
 		{
        		if(mat[i][j] == 2){
-       			glColor3f(rgbInterior[0],rgbInterior[1],rgbInterior[2]);
-       			glVertex2i(((j + xMin)*escala), ((yMax - i)*escala));
+       			glColor3f(num + signo*rgbInterior[0],num + signo*rgbInterior[1],num + signo*rgbInterior[2]);
+       			glVertex2i(((j + xMin)*escala) + dx, ((yMax - i)*escala)+ dy);
        		}
        		if(mat[i][j] == 1){
-       			glColor3f(rgbExterior[0],rgbExterior[1],rgbExterior[2]);
-       			glVertex2i(((j + xMin)*escala), ((yMax - i)*escala));
+       			glColor3f(num + signo*rgbExterior[0],num + signo*rgbExterior[1],num + signo*rgbExterior[2]);
+       			glVertex2i(((j + xMin)*escala) + dx, ((yMax - i)*escala) + dy);
        		}
 		}
 	}
@@ -102,13 +105,13 @@ void dibujar(int cantPuntos,int escala,int puntosPrimeraCapa[maxCant][2],int yMa
 
 // -------------------------------------------------------------------------
 void fondo(float r,float g, float b, int dispersion, int trasX, int trasY){
-    glColor3f(r, g, b);
+    glColor3f(num + signo*r, num + signo*g, num + signo*b);
 	for (int i = 0; i < win_data.Width; ++i)
 	{
 		for (int j = 0; j < win_data.Height; ++j)
 		{
 			if(i%dispersion == 0 && j%dispersion == 0){
-       			glVertex2i(i+trasY, j+trasX);
+       			glVertex2i(i+trasY + dx, j+trasX + dy);
 			}
 		}
 	}
@@ -120,12 +123,17 @@ void myInit (void)
     glClearColor(0.0,0.0,0.0,0.0);
 }
 
-// -------------------------------------------------------------------------
-void myDisplay (void)
-{
+void aux(bool negativo){
 
+	if (negativo){
+		signo = -1.0;
+		num = 1.0;
+	}else{
+		signo = 1.0;
+		num = 0.0;
+	}
 	float* rgbInterior = new float[3];
-  float* rgbExterior = new float[3];
+  	float* rgbExterior = new float[3];
 
     //FONDO----------------------------
     //glClear(GL_COLOR_BUFFER_BIT);
@@ -307,14 +315,40 @@ void myDisplay (void)
     //PUPILAS--------------------------------------------------------------------------------------
    	glPointSize(11.0);
   	glBegin(GL_POINTS);
-  		glColor3f(0.0,0.0,0.0);
-       	glVertex2i(272.5, 262.5);
-       	glVertex2i(417.5, 262.5);
+  		glColor3f(num + signo*0.0,num + signo*0.0,num + signo*0.0);
+       	glVertex2i(272 + dx, 262 + dy);
+       	glVertex2i(417 + dx, 262 + dy);
    	glEnd();
 
+   	
 
-    glFlush();
+}
+
+// -------------------------------------------------------------------------
+void myDisplay (void)
+{
+  	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+    
+	
+	glMatrixMode( GL_PROJECTION ); //hace el recorte , primero
+  	glLoadIdentity( ); //matriz identidad
+  	glViewport( 0, 0, win_data.Width/2, win_data.Height); //ventana fisica donde voy a dibujar
+  	gluOrtho2D( 0, win_data.Width/2, 0, win_data.Height); //definir matriz de proyeccion marco al mundo minx maxx miny maxy --  //mas pequeño = zoom +
+  	glMatrixMode( GL_MODELVIEW );
+
+	aux(false);
+
+	glMatrixMode( GL_PROJECTION ); //hace el recorte , primero
+  	glLoadIdentity( ); //matriz identidad
+  	glViewport( win_data.Width/2, 0, win_data.Width/2, win_data.Height ); //ventana fisica donde voy a dibujar
+  	gluOrtho2D( 0,win_data.Width/2, 0, win_data.Height); //definir matriz de proyeccion marco al mundo minx maxx miny maxy --  //mas pequeño = zoom +
+  	glMatrixMode( GL_MODELVIEW );
+
+  	aux(true);
+
+  	glFlush();
     glutSwapBuffers( );
+    
 }
 
 // -------------------------------------------------------------------------
@@ -325,6 +359,25 @@ void KeyboardCbk( unsigned char key, int x, int y ) //lletra del teclado y pos d
 // -------------------------------------------------------------------------
 void SpecialKeyboardCbk( int key, int x, int y ) // id tecla especial, GLUT_F1 GLUT_UP, etc -
 {
+	
+	if(key == GLUT_KEY_LEFT){
+    	std::cout << "izquierda" << std::endl;
+		dx -=1;
+	}   
+        
+    else if(key == GLUT_KEY_RIGHT){
+    	std::cout << "derecha" << std::endl;
+        dx +=1;
+    }
+    else if(key == GLUT_KEY_DOWN){
+    	std::cout << "abajo" << std::endl;
+        dy-=1;
+    }
+    else if(key == GLUT_KEY_UP){
+    	std::cout << "arriba" << std::endl;
+        dy+=1;
+    }
+    myDisplay();
 }
 
 //-----------------------------------------------------------------------
@@ -332,20 +385,6 @@ void myResize (int w, int h)
 {
   win_data.Width = w; //
   win_data.Height = ( h > 0 )? h: 1;
-
-  glMatrixMode( GL_PROJECTION ); //hace el recorte , primero
-  glLoadIdentity( ); //matriz identidad
-  glViewport( 0, 0, win_data.Width/2, win_data.Height); //ventana fisica donde voy a dibujar
-  gluOrtho2D( 0, win_data.Width/2, 0, win_data.Height); //definir matriz de proyeccion marco al mundo minx maxx miny maxy --  //mas pequeño = zoom +
-  glMatrixMode( GL_MODELVIEW );
-
-  myDisplay();
-
-  glMatrixMode( GL_PROJECTION ); //hace el recorte , primero
-  glLoadIdentity( ); //matriz identidad
-  glViewport( win_data.Width/2, 0, win_data.Width/2, win_data.Height ); //ventana fisica donde voy a dibujar
-  gluOrtho2D( 0,win_data.Width/2, 0, win_data.Height); //definir matriz de proyeccion marco al mundo minx maxx miny maxy --  //mas pequeño = zoom +
-  glMatrixMode( GL_MODELVIEW );
 
   myDisplay();
 }
