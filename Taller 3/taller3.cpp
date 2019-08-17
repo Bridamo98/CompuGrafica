@@ -106,9 +106,9 @@ void dibujar(int cantPuntos,int escala,int puntosPrimeraCapa[maxCant][2],int yMa
 // -------------------------------------------------------------------------
 void fondo(float r,float g, float b, int dispersion, int trasX, int trasY){
     glColor3f(num + signo*r, num + signo*g, num + signo*b);
-	for (int i = 0; i < win_data.Width; ++i)
+	for (int i = 0; i < win_data.Width-dx; ++i)
 	{
-		for (int j = 0; j < win_data.Height; ++j)
+		for (int j = 0; j < win_data.Height-dy; ++j)
 		{
 			if(i%dispersion == 0 && j%dispersion == 0){
        			glVertex2i(i+trasY + dx, j+trasX + dy);
@@ -320,7 +320,7 @@ void aux(bool negativo){
        	glVertex2i(417 + dx, 262 + dy);
    	glEnd();
 
-   	
+
 
 }
 
@@ -328,8 +328,8 @@ void aux(bool negativo){
 void myDisplay (void)
 {
   	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-    
-	
+
+
 	glMatrixMode( GL_PROJECTION ); //hace el recorte , primero
   	glLoadIdentity( ); //matriz identidad
   	glViewport( 0, 0, win_data.Width/2, win_data.Height); //ventana fisica donde voy a dibujar
@@ -348,7 +348,7 @@ void myDisplay (void)
 
   	glFlush();
     glutSwapBuffers( );
-    
+
 }
 
 // -------------------------------------------------------------------------
@@ -359,23 +359,23 @@ void KeyboardCbk( unsigned char key, int x, int y ) //lletra del teclado y pos d
 // -------------------------------------------------------------------------
 void SpecialKeyboardCbk( int key, int x, int y ) // id tecla especial, GLUT_F1 GLUT_UP, etc -
 {
-	
+
 	if(key == GLUT_KEY_LEFT){
-    	std::cout << "izquierda" << std::endl;
-		dx -=1;
-	}   
-        
+    //	std::cout << "izquierda" << std::endl;
+		dx +=1;
+	}
+
     else if(key == GLUT_KEY_RIGHT){
-    	std::cout << "derecha" << std::endl;
-        dx +=1;
+    //	std::cout << "derecha" << std::endl;
+        dx -=1;
     }
     else if(key == GLUT_KEY_DOWN){
-    	std::cout << "abajo" << std::endl;
-        dy-=1;
+    //	std::cout << "abajo" << std::endl;
+        dy+=1;
     }
     else if(key == GLUT_KEY_UP){
-    	std::cout << "arriba" << std::endl;
-        dy+=1;
+    //	std::cout << "arriba" << std::endl;
+        dy-=1;
     }
     myDisplay();
 }
