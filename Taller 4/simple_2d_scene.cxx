@@ -80,6 +80,99 @@ void DrawBase( ) //base ortonormal, ejes x (rojo) y (verde)
 }
 
 // -------------------------------------------------------------------------
+void DrawTree( )
+{
+  // Tronco Arbol
+  glLoadIdentity();
+  glTranslated(1.3,-1.1,0);
+  glScaled(0.45,1,1);
+  glColor3f(84,55,33);
+  DrawSquare( GL_POLYGON );
+
+  // Primera rama
+  glLoadIdentity();
+  glTranslated(1.3,-0.4,0);
+  glScaled(0.8,0.8,1);
+  glColor3f(13,140,30);
+  DrawTriangle( GL_POLYGON );
+
+  // Segunda rama
+  glLoadIdentity();
+  glTranslated(1.3,-0.2,0);
+  glScaled(0.8,0.8,1);
+  glColor3f(13,140,47);
+  DrawTriangle( GL_POLYGON );
+
+  //Tercera rama
+  glLoadIdentity();
+  glTranslated(1.3,-0.02,1);
+  glScaled(0.8,0.8,0);
+  glColor3f(13,140,68);
+  DrawTriangle( GL_POLYGON );
+}
+
+// -------------------------------------------------------------------------
+void DrawHouse( )
+{
+  //casa
+  glLoadIdentity();
+  glTranslated(0,-0.8,0);
+  glScaled(-0.7, 1.6, 1);
+  glColor3f( 0, 0, 1 );
+  DrawSquare( GL_POLYGON );
+
+  // Techo
+  glLoadIdentity();
+  glTranslated(0,0.43,0);
+  glScaled(1.8,1,1);
+  glColor3f(1,1,1);
+  DrawTriangle( GL_POLYGON );
+}
+
+// -------------------------------------------------------------------------
+void DrawCar( )
+{
+  // Frente carro
+  glLoadIdentity();
+  glTranslated(-0.7,-1.2,0);
+  glScaled(0.3,0.3,1);
+  glColor3f(0,0,1);
+  DrawSquare( GL_POLYGON );
+
+  // Atras carro
+  glLoadIdentity();
+  glTranslated(-1.1,-1.1,0);
+  glScaled(0.5,0.5,1);
+  glColor3f(0,1,1);
+  DrawSquare( GL_POLYGON );
+
+  // Llanta delantera
+  glLoadIdentity();
+  glTranslated(-0.95,-1.42,0);
+  glScaled(0.07,0.07,1);
+  glColor3f(1,1,1);
+  DrawCircle( GL_POLYGON, 100 );
+
+  // Llanta Trasera
+  glLoadIdentity();
+  glTranslated(-1.25,-1.42,0);
+  glScaled(0.07,0.07,1);
+  glColor3f(1,1,1);
+  DrawCircle( GL_POLYGON, 100 );
+}
+
+// -------------------------------------------------------------------------
+void DrawFloor( )
+{
+  //piso
+  glLoadIdentity();
+  glTranslated(-1,-1.55,0);
+  glScaled(1.25,-0.1,1);
+  glColor3f(0,0,1);
+  DrawSquare( GL_POLYGON );
+}
+
+// -------------------------------------------------------------------------
 void Init( )
 {
   glClearColor( 0.0, 0.0, 0.0, 0.0 );
@@ -104,84 +197,11 @@ void DisplayCbk( )
 
   // Orthogonal base
   DrawBase( );
-//---------- Cuadrados -------------------------------------
-  //casa
-  glTranslated(0,-0.8,0);
-  glScaled(-0.7, 1.6, 1);
-  glColor3f( 0, 0, 1 );
-  DrawSquare( GL_POLYGON );
 
-  //piso
-  glLoadIdentity();
-  glTranslated(-1,-1.55,0);
-  glScaled(1.25,-0.1,1);
-  glColor3f(0,0,1);
-  DrawSquare( GL_POLYGON );
-
-  // Frente carro
-  glLoadIdentity();
-  glTranslated(-0.7,-1.2,0);
-  glScaled(0.3,0.3,1);
-  glColor3f(0,0,1);
-  DrawSquare( GL_POLYGON );
-
-  // Atras carro
-  glLoadIdentity();
-  glTranslated(-1.1,-1.1,0);
-  glScaled(0.5,0.5,1);
-  glColor3f(0,1,1);
-  DrawSquare( GL_POLYGON );
-
-  // Tronco Arbol
-  glLoadIdentity();
-  glTranslated(1.3,-1.1,0);
-  glScaled(0.45,1,1);
-  glColor3f(0,0,1);
-  DrawSquare( GL_POLYGON );
-
-//------------ Circulos -----------------------------------
-  // Llanta delantera
-  glLoadIdentity();
-  glTranslated(-0.95,-1.42,0);
-  glScaled(0.07,0.07,1);
-  glColor3f(1,1,1);
-  DrawCircle( GL_POLYGON, 100 );
-
-  // Llanta Trasera
-  glLoadIdentity();
-  glTranslated(-1.25,-1.42,0);
-  glScaled(0.07,0.07,1);
-  glColor3f(1,1,1);
-  DrawCircle( GL_POLYGON, 100 );
-
-//------------ Triangulos ---------------------------------
-  // Techo
-  glLoadIdentity();
-  glTranslated(0,0.43,0);
-  glScaled(1.8,1,1);
-  glColor3f(1,1,1);
-  DrawTriangle( GL_POLYGON );
-
-  // Primera rama
-  glLoadIdentity();
-  glTranslated(1.3,-0.4,0);
-  glScaled(0.8,0.8,1);
-  glColor3f(1,1,1);
-  DrawTriangle( GL_POLYGON );
-
-  // Segunda rama
-  glLoadIdentity();
-  glTranslated(1.3,-0.2,0);
-  glScaled(0.8,0.8,1);
-  glColor3f(1,1,1);
-  DrawTriangle( GL_POLYGON );
-
-  //Tercera rama
-  glLoadIdentity();
-  glTranslated(1.3,-0.02,1);
-  glScaled(0.8,0.8,0);
-  glColor3f(1,1,1);
-  DrawTriangle( GL_POLYGON );
+  DrawCar( );
+  DrawTree( );
+  DrawHouse( );
+  DrawFloor( );
 
   // Finish
   glutSwapBuffers( );
