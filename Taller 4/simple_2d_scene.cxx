@@ -80,95 +80,95 @@ void DrawBase( ) //base ortonormal, ejes x (rojo) y (verde)
 }
 
 // -------------------------------------------------------------------------
-void DrawTree( )
+void DrawTree(float trasX, float trasY, float tam)
 {
   // Tronco Arbol
   glLoadIdentity();
-  glTranslated(1.3,-1.1,0);
-  glScaled(0.45,1,1);
-  glColor3f(84,55,33);
+  glTranslated((1.3+trasX)*tam,(-1.1+trasY)*tam,0);
+  glScaled(0.45*tam,1*tam,1*tam);
+  glColor3f(0.36,0.20,0.09);
   DrawSquare( GL_POLYGON );
 
   // Primera rama
   glLoadIdentity();
-  glTranslated(1.3,-0.4,0);
-  glScaled(0.8,0.8,1);
-  glColor3f(13,140,30);
+  glTranslated((1.3+trasX)*tam,(-0.4+trasY)*tam,0);
+  glScaled(0.8*tam,0.8*tam,1*tam);
+  glColor3f(0.22,0.49,0.01);
   DrawTriangle( GL_POLYGON );
 
   // Segunda rama
   glLoadIdentity();
-  glTranslated(1.3,-0.2,0);
-  glScaled(0.8,0.8,1);
-  glColor3f(13,140,47);
+  glTranslated((1.3+trasX)*tam,(-0.2+trasY)*tam,0);
+  glScaled(0.8*tam,0.8*tam,1*tam);
+  glColor3f(0.23,0.40,0.16);
   DrawTriangle( GL_POLYGON );
 
   //Tercera rama
   glLoadIdentity();
-  glTranslated(1.3,-0.02,1);
-  glScaled(0.8,0.8,0);
-  glColor3f(13,140,68);
+  glTranslated((1.3+trasX)*tam,(-0.02+trasY)*tam,1);
+  glScaled(0.8*tam,0.8*tam,0*tam);
+  glColor3f(0.27,0.55,0.0);
   DrawTriangle( GL_POLYGON );
 }
 
 // -------------------------------------------------------------------------
-void DrawHouse( )
+void DrawHouse(float trasX, float trasY ,float tam)
 {
   //casa
   glLoadIdentity();
-  glTranslated(0,-0.8,0);
-  glScaled(-0.7, 1.6, 1);
-  glColor3f( 0, 0, 1 );
+  glTranslated((0.0+trasX)*tam,(-0.8+trasY)*tam,0);
+  glScaled(-0.7*tam, 1.6*tam, 1*tam);
+  glColor3f( 0.87, 0.49, 0.20 );
   DrawSquare( GL_POLYGON );
 
   // Techo
   glLoadIdentity();
-  glTranslated(0,0.43,0);
-  glScaled(1.8,1,1);
-  glColor3f(1,1,1);
+  glTranslated((0.0+trasX)*tam,(0.43+trasY)*tam,0);
+  glScaled(1.8*tam,1*tam,1*tam);
+  glColor3f(0.8,0.0,0.0);
   DrawTriangle( GL_POLYGON );
 }
 
 // -------------------------------------------------------------------------
-void DrawCar( )
+void DrawCar(float trasX, float trasY, float tam )
 {
   // Frente carro
   glLoadIdentity();
-  glTranslated(-0.7,-1.2,0);
-  glScaled(0.3,0.3,1);
+  glTranslated((-0.7+trasX)*tam,(-1.2+trasY)*tam,0);
+  glScaled(0.3*tam,0.3*tam,1*tam);
   glColor3f(0,0,1);
   DrawSquare( GL_POLYGON );
 
   // Atras carro
   glLoadIdentity();
-  glTranslated(-1.1,-1.1,0);
-  glScaled(0.5,0.5,1);
-  glColor3f(0,1,1);
+  glTranslated((-1.1+trasX)*tam,(-1.1+trasY)*tam,0);
+  glScaled(0.5*tam,0.5*tam,1*tam);
+  glColor3f(0.80,0.79,0.71);
   DrawSquare( GL_POLYGON );
 
   // Llanta delantera
   glLoadIdentity();
-  glTranslated(-0.95,-1.42,0);
-  glScaled(0.07,0.07,1);
-  glColor3f(1,1,1);
+  glTranslated((-0.95+trasX)*tam,(-1.42+trasY)*tam,0);
+  glScaled(0.07*tam,0.07*tam,1*tam);
+  glColor3f(0.21,0.21,0.21);
   DrawCircle( GL_POLYGON, 100 );
 
   // Llanta Trasera
   glLoadIdentity();
-  glTranslated(-1.25,-1.42,0);
-  glScaled(0.07,0.07,1);
-  glColor3f(1,1,1);
+  glTranslated((-1.25+trasX)*tam,(-1.42+trasY)*tam,0);
+  glScaled(0.07*tam,0.07*tam,1*tam);
+  glColor3f(0.21,0.21,0.21);
   DrawCircle( GL_POLYGON, 100 );
 }
 
 // -------------------------------------------------------------------------
-void DrawFloor( )
+void DrawFloor( float trasX, float trasY, float tam)
 {
   //piso
   glLoadIdentity();
-  glTranslated(-1,-1.55,0);
-  glScaled(1.25,-0.1,1);
-  glColor3f(0,0,1);
+  glTranslated((-1+trasX)*tam,(-1.55+trasY)*tam,0);
+  glScaled(1.25*tam,-0.1*tam,1*tam);
+  glColor3f(0.20,0.0,0.0);
   DrawSquare( GL_POLYGON );
 }
 
@@ -196,12 +196,39 @@ void DisplayCbk( )
   glLoadIdentity( );
 
   // Orthogonal base
-  DrawBase( );
+  DrawBase();
+  
+  for (float i = 0.0; i < 16.0; i = i + 0.75)//fila de arboles
+  {
+  	DrawTree(-9.0+i,7.0,0.25);
+  }
+  for (float i = 0.0; i < 16.0; i = i + 0.75)//fila de arboles
+  {
+  	DrawTree(-9.0+i,4.0,0.35);
+  }
+  for (float i = 0.0; i < 16.0; i = i + 0.75)//fila de arboles
+  {
+  	DrawTree(-9.0+i,2.0,0.45);
+  }
+  
+  float sepX=0.0;
+  float sepY=0.0;
+  float factEsc=1.0;
+  for (int i = 0; i < 5; ++i)
+  {
+  	DrawHouse( 2.0+sepX,1.0+sepY,0.35*factEsc);//lado derecho
+  	DrawHouse( -2.0-sepX,1.0+sepY,0.35*factEsc);//lado izquierdo
 
-  DrawCar( );
-  DrawTree( );
-  DrawHouse( );
-  DrawFloor( );
+  	factEsc+=0.25;
+  	sepY-=0.30;
+  	sepX+=0.15;
+  }
+  for (float i = 0.0; i < 3.0; ++i)
+  {
+  	DrawCar(0.0+i,0.5,1.5);
+  	DrawFloor( 0.0+i,0.5,1.5);
+  }
+  
 
   // Finish
   glutSwapBuffers( );
