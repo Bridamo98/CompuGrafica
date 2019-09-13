@@ -17,15 +17,15 @@ void ResizeCbk( int width, int height )
   glMatrixMode( GL_PROJECTION );
   glLoadIdentity( );
   glViewport( 0, 0, width, height );
- 
+
   // Ortho
   // glOrtho( -2, 6, 0, 8, -2, 200 );
 
   // Prespective
   gluPerspective(
-    45,
+    120,
     float( width ) / float( height ),
-    0.01, 200
+    0.01, 400
     );
 }
 
@@ -35,44 +35,88 @@ void DisplayCbk( )
 
   glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
   glMatrixMode( GL_MODELVIEW );
-  
+
   // Camara
   glLoadIdentity( );
   gluLookAt( posX, posY, posZ, 0, 0, 0, 0, 1, 0 );
 
+// Luna derecha ----------------------
 
   glPushMatrix( );
-  glScalef( 3, 3, 3 );
-  prismaTriangular( );
-
-  glPopMatrix();
-
-  glPushMatrix( );
-  glScalef( 1.5, 1.5, 1.5 );
-  glTranslatef(1.5,1.5,1.5);
+  glScalef( 1.5, 1.5, 1.5);
+  glTranslatef(4.7,4,0);
   tetraedro( );
 
   glPopMatrix();
 
+// Planeta derecha superior ----------------------
+
   glPushMatrix( );
-  glTranslatef(2.5,2.5,0);
-  glScalef( 0.5, 0.5, 0.5 );
+  glScalef( 2.5, 2.5, 2.5);
+  glTranslatef(6,1.5,0);
   cubo( );
 
+  glPopMatrix();
 
+// Planeta derecha inferior ----------------------
+
+  glPushMatrix( );
+  glScalef( 2.5 , 2.5, 2.5);
+  glTranslatef(5.5,-0.5,0);
+  octaedro( );
+
+// Sol ----------------------
+  glPopMatrix();
+
+  glPushMatrix( );
+  glScalef( 5 , 5, 5);
+  octaedro( );
+
+  glPopMatrix();
+
+// Planeta izquierda superior ----------------------
+
+  glPushMatrix( );
+  glScalef( 2.5 , 2.5, 2.5);
+  glTranslatef(-6 ,3 ,0);
+  tetraedro( );
+
+  glPopMatrix();
+
+// Luna izquierda superior ----------------------
+
+  glPushMatrix( );
+  glScalef( 1, 1, 1 );
+  glTranslatef(-6, 6,0);
+  cubo( );
+
+  glPopMatrix();
+
+// Luna izquierda inferior ----------------------
+
+  glPushMatrix( );
+  glScalef( 1.5, 1.5, 1.5 );
+  glTranslatef(-5.3,0,0);
+  prismaTriangular( );
+
+  glPopMatrix();
+
+// Planeta izquierda inferior ----------------------
+
+  glPushMatrix( );
+  glScalef( 3, 3, 3 );
+  glTranslatef(-4.5,-3,0);
+  prismaTriangular( );
+
+  glPopMatrix();
+// Planeta izquierda inferior ----------------------
+
+  glPushMatrix( );
+  glScalef( 1.5, 1.5, 1.5 );
+  glTranslatef(-3,-5,0);
+  octaedro( );
 
   glPopMatrix();//MUY IMPORTANTE ESTE POP FINAL
-
-  // Cubo 1 CÓDIGO DEL PROFESOR
-  /*glPushMatrix( );
-  glScalef( 3, 3, 3 );
-  DrawUnitaryCube( );
-
-  // Cubo 2
-  glPopMatrix( );
-  glPushMatrix( );
-  glScalef( 2, 1.5, 1 );
-  DrawUnitaryCube( );*/
 
   // Finish
   glutSwapBuffers( );
@@ -86,7 +130,7 @@ void SpecialKeyboardCbk( int key, int x, int y ) // id tecla especial, GLUT_F1 G
     if(phi <= 0.00){
       phi = 1.99;
     }else{
-      phi -= 0.01; 
+      phi -= 0.01;
     }
   }
   else if(key == GLUT_KEY_RIGHT){
@@ -125,7 +169,7 @@ int main( int argc, char* argv[] )
   glutInit( &argc, argv );
   glutInitDisplayMode( GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);//parámetro para permitir efecto de superposición (GLUT_DEPTH)
   glutInitWindowPosition( 50, 50 );
-  glutInitWindowSize( 500, 500 );
+  glutInitWindowSize( 700, 700 );
   glutCreateWindow( "3D test!!!" );
 
   glEnable(GL_DEPTH_TEST);//Para permitir efecto de superposición
