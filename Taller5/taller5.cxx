@@ -4,7 +4,7 @@
 #include "objetos3d.h"
 #define PI 3.14159265
 // -------------------------------------------------------------------------
-float r = 10.0 , theta=0.50 , phi= 0.00, posX = r * sin(theta*PI)*sin(phi*PI), posY = r*cos(theta*PI), posZ = r*sin(theta*PI)*cos(phi*PI);
+float r = 15.0 , theta=0.50 , phi= 0.00, posX = r * sin(theta*PI)*sin(phi*PI), posY = r*cos(theta*PI), posZ = r*sin(theta*PI)*cos(phi*PI);
 
 void Init( )
 {
@@ -23,7 +23,7 @@ void ResizeCbk( int width, int height )
 
   // Prespective
   gluPerspective(
-    120,
+    45,
     float( width ) / float( height ),
     0.01, 400
     );
@@ -41,35 +41,46 @@ void DisplayCbk( )
   gluLookAt( posX, posY, posZ, 0, 0, 0, 0, 1, 0 );
 
 // Luna derecha ----------------------
-
   glPushMatrix( );
-  glScalef( 1.5, 1.5, 1.5);
-  glTranslatef(4.7,4,0);
-  tetraedro( );
+  glTranslatef(4.75,4,0);
+  glRotatef(14.0362,0,0,1);
+  glScalef( 1.11803, 1.25, 1.11803);
+  tetraedro( ); 
 
   glPopMatrix();
 
 // Planeta derecha superior ----------------------
 
   glPushMatrix( );
-  glScalef( 2.5, 2.5, 2.5);
   glTranslatef(6,1.5,0);
+  glRotatef(14.0362,0,0,1);
+  glScalef( 1.11803, 1.11803, 1.11803);
   cubo( );
+
+  glPopMatrix();
+
+  //prueba
+  glPushMatrix( );
+  glTranslatef(6,1.5,0);
+  prismaTriangular( );  
 
   glPopMatrix();
 
 // Planeta derecha inferior ----------------------
 
   glPushMatrix( );
-  glScalef( 2.5 , 2.5, 2.5);
   glTranslatef(5.5,-0.5,0);
+  glRotatef(45.0,0,1,0);
+  glScalef( 0.70812 , 0.70812, 0.70812);
   octaedro( );
 
-// Sol ----------------------
   glPopMatrix();
 
+// Sol ----------------------
+
   glPushMatrix( );
-  glScalef( 5 , 5, 5);
+  glRotatef(45.0,0,1,0);
+  glScalef( 1.58112 ,1.58112, 1.58112);
   octaedro( );
 
   glPopMatrix();
@@ -77,8 +88,9 @@ void DisplayCbk( )
 // Planeta izquierda superior ----------------------
 
   glPushMatrix( );
-  glScalef( 2.5 , 2.5, 2.5);
   glTranslatef(-6 ,3 ,0);
+  glRotatef(-14.0362,0,0,1);
+  glScalef( 1.11821 , 1.25, 1.11821);
   tetraedro( );
 
   glPopMatrix();
@@ -86,8 +98,9 @@ void DisplayCbk( )
 // Luna izquierda superior ----------------------
 
   glPushMatrix( );
-  glScalef( 1, 1, 1 );
-  glTranslatef(-6, 6,0);
+  glTranslatef(-5, 4.5,0);
+  glRotatef(45,0,0,1);
+  glScalef( 0.70812 , 0.70812, 0.70812);
   cubo( );
 
   glPopMatrix();
@@ -95,8 +108,9 @@ void DisplayCbk( )
 // Luna izquierda inferior ----------------------
 
   glPushMatrix( );
-  glScalef( 1.5, 1.5, 1.5 );
-  glTranslatef(-5.3,0,0);
+  glTranslatef(-5.25,0.75,0);
+  glRotatef(18.43491,0,0,1);
+  glScalef( 0.55012, 0.79061,  0.55012);
   prismaTriangular( );
 
   glPopMatrix();
@@ -104,16 +118,18 @@ void DisplayCbk( )
 // Planeta izquierda inferior ----------------------
 
   glPushMatrix( );
-  glScalef( 3, 3, 3 );
-  glTranslatef(-4.5,-3,0);
+  glTranslatef(-5,-3,0);
+  glRotatef(30.96,0,0,1);
+  glScalef( 1.45772, 1.67731, 1.45772 );
   prismaTriangular( );
 
   glPopMatrix();
 // Planeta izquierda inferior ----------------------
 
   glPushMatrix( );
-  glScalef( 1.5, 1.5, 1.5 );
-  glTranslatef(-3,-5,0);
+  glTranslatef(-3,-3,0);
+  glRotatef(30.96,0,0,1);
+  glScalef( 0.35392, 0.55931, 0.35392 );
   octaedro( );
 
   glPopMatrix();//MUY IMPORTANTE ESTE POP FINAL
