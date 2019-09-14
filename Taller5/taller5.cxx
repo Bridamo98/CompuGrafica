@@ -23,7 +23,7 @@ void ResizeCbk( int width, int height )
 
   // Prespective
   gluPerspective(
-    45,
+    50,
     float( width ) / float( height ),
     0.01, 400
     );
@@ -45,7 +45,7 @@ void DisplayCbk( )
   glTranslatef(4.75,4,0);
   glRotatef(14.0362,0,0,1);
   glScalef( 1.11803, 1.25, 1.11803);
-  tetraedro( ); 
+  tetraedro( );
 
   glPopMatrix();
 
@@ -59,12 +59,6 @@ void DisplayCbk( )
 
   glPopMatrix();
 
-  //prueba
-  glPushMatrix( );
-  glTranslatef(6,1.5,0);
-  prismaTriangular( );  
-
-  glPopMatrix();
 
 // Planeta derecha inferior ----------------------
 
@@ -124,7 +118,8 @@ void DisplayCbk( )
   prismaTriangular( );
 
   glPopMatrix();
-// Planeta izquierda inferior ----------------------
+
+// Luna izquierda inferior ----------------------
 
   glPushMatrix( );
   glTranslatef(-3,-3,0);
@@ -132,7 +127,83 @@ void DisplayCbk( )
   glScalef( 0.35392, 0.55931, 0.35392 );
   octaedro( );
 
-  glPopMatrix();//MUY IMPORTANTE ESTE POP FINAL
+  glPopMatrix();
+
+// Elipse planeta izquierda superior Negra ---------------------
+
+  glPushMatrix( );
+  glRotatef(153,0,0,1);
+  glScalef(6.7,1,1);
+  glColor3f(0,0,0);
+  elipse( );
+  glPopMatrix();
+
+// Elipse planeta derecha superior Roja ---------------------------
+
+  glPushMatrix( );
+  glRotatef(14,0,0,1);
+  glScalef(6.7,1,1);
+  glColor3f(1,0,0);
+  elipse( );
+  glPopMatrix();
+
+// Elipse planeta derecha inferior Verde ---------------------------
+
+  glPushMatrix( );
+  glRotatef(355,0,0,1);
+  glScalef(5.5,0.5,1);
+  glColor3f(0,1,0);
+  elipse( );
+  glPopMatrix();
+
+// Elipse planeta izquierda inferior Azul ----------------------------
+
+  glPushMatrix( );
+  glRotatef(30,0,0,1);
+  glScalef(6,1,1);
+  glColor3f(0,0,1);
+  elipse( );
+  glPopMatrix();
+
+// Elipse Luna derecha superior Amarilla -----------------------------
+
+  glPushMatrix( );
+  glTranslatef(6,1.5,0);
+  glRotatef(120,0,0,1);
+  glScalef(3,1,1);
+  glColor3f(1,1,0);
+  elipse( );
+  glPopMatrix();
+
+// Elipse Luna izquierda superior Azul Claro -------------------------------
+
+  glPushMatrix( );
+  glTranslatef(-6.5,3 ,0);
+  glRotatef(120,0,0,1);
+  glScalef(2.5,0.5,1);
+  glColor3f(0,1,1);
+  elipse( );
+  glPopMatrix();
+
+// Elipse planeta derecha superior Morada -----------------------------
+
+  glPushMatrix( );
+  glTranslatef(-6,3 ,0);
+  glRotatef(50,0,0,1);
+  glScalef(2,0.7,1);
+  glColor3f(1,0,1);
+  elipse( );
+  glPopMatrix();
+
+// Elipse planeta derecha superior Gris ----------------------------------
+
+  glPushMatrix( );
+  glTranslatef(-5,-3,0);
+  glScalef(2,0.5,1);
+  glColor3f(0.5,0.5,0.5);
+  elipse( );
+
+  glPopMatrix();//MUY IMPORTANTE ESTE POP FINAL*/
 
   // Finish
   glutSwapBuffers( );

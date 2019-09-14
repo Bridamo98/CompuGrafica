@@ -4,6 +4,7 @@
 #define _SQRT3_6 0.28867513459
 #define _SQRT6_6 0.40824829046
 #define _1_SQRT2 0.70710678118
+#define _2PI     6.28318530718
 
 //TO DO
 void cubo( )
@@ -189,5 +190,15 @@ void prismaTriangular( )
   } // end for
 }
 
+void elipse( )
+{
+  glBegin( GL_LINES );
+  for( unsigned int i = 0; i < 1000; ++i )
+  {
+    float t = _2PI * float( i ) / float( 1000 );
+    glVertex2f( std::cos( t ), std::sin( t ) );
+  } // end if
+  glEnd( );
+}
 // -------------------------------------------------------------------------
 #endif // OBJETOS3D_H_INCLUDED
