@@ -133,7 +133,8 @@ void DisplayCbk( )
 
   glPushMatrix( );
   glRotatef(153,0,0,1);
-  glScalef(6.7,1,1);
+  glRotatef(40.6012,-1,0,0);
+  glScalef(6.7,1,3.5);
   glColor3f(0,0,0);
   elipse( );
   glPopMatrix();
@@ -142,7 +143,9 @@ void DisplayCbk( )
 
   glPushMatrix( );
   glRotatef(14,0,0,1);
-  glScalef(6.7,1,1);
+  glRotatef(-30.9637,-1,0,0);
+  glRotatef(12.5288,-1,0,0);
+  glScalef(6.7,1,2.5);
   glColor3f(1,0,0);
   elipse( );
   glPopMatrix();
@@ -151,7 +154,8 @@ void DisplayCbk( )
 
   glPushMatrix( );
   glRotatef(355,0,0,1);
-  glScalef(5.5,0.5,1);
+  glRotatef(-12.5288,-1,0,0);
+  glScalef(5.5,0.5,2.25);
   glColor3f(0,1,0);
   elipse( );
   glPopMatrix();
@@ -160,7 +164,8 @@ void DisplayCbk( )
 
   glPushMatrix( );
   glRotatef(30,0,0,1);
-  glScalef(6,1,1);
+  glRotatef(56.3099,-1,0,0);
+  glScalef(6,1,2);
   glColor3f(0,0,1);
   elipse( );
   glPopMatrix();
