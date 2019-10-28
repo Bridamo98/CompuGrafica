@@ -32,6 +32,8 @@
 #define LEFT  3//ESTO VA
 #define RIGHT 4//ESTO VA
 
+
+
 using namespace std;
 
 
@@ -46,7 +48,7 @@ int direction = DOWN;
 bool moved = false;
 const int move_speed = 500;
 
-float xCam, yCam, zCam = 30.0f; 
+float xCam, yCam, zCam = 30.0f;
 std::deque< std::deque<float> > part_coords;
 
 bool food_available = false;
@@ -106,7 +108,7 @@ void drawBitmapText(char* text, float x, float y, float z) {
     char* c;
 
     glPushMatrix();
-    glColor3f(1.0f, 1.0f, 1.0f);
+    glColor3f(0.0f, 1.0f, 0.0f);
     glRasterPos3f(x, y, z);
 
     for(c = text; *c != '\0'; c++){
@@ -156,7 +158,7 @@ void drawSnake(){
 
 void display(){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    
+
 
 
     glMatrixMode( GL_PROJECTION );
@@ -168,7 +170,7 @@ void display(){
     glLoadIdentity( );
 
     gluLookAt( 0, map_half_length+20, 0,0, map_half_length+20, -40, 0, 1, 0);
-    
+
     glPushMatrix();
     drawScore();
     glPopMatrix();
@@ -191,7 +193,7 @@ void display(){
     cout<<part_coords[0][0]<<" "<<part_coords[0][1]<<" "<<zCam<<" "<<xCam<<" "<<yCam<<" "<<zCam<<endl;
 
     glPushMatrix();
-        glColor3f(1.0f,1.0f,1.0f);
+        glColor3f(0.0f,0.0f,1.0f);
         glLineWidth(2.0);
         for (float i = -31.0f; i <= 31.0f; i = i + 2.0f)
         {
@@ -209,7 +211,6 @@ void display(){
         }
     glPopMatrix();
 
-
     glPushMatrix();
     drawSnake();
     glPopMatrix();
@@ -221,9 +222,6 @@ void display(){
     glPushMatrix();
     drawFood();
     glPopMatrix();
-
-
-
 
     glutSwapBuffers();
 }
@@ -406,7 +404,7 @@ void special(int key, int x, int y){
 
                 xCam = map_half_length;
                 yCam = part_coords[0][1];
-                break;   
+                break;
             }
             if(direction == LEFT){
                 moved = true;
@@ -414,16 +412,16 @@ void special(int key, int x, int y){
                 moveSnake(DOWN);
                 yCam = -map_half_length;
                 xCam = part_coords[0][0];
-                break;      
+                break;
             }
             if(direction == RIGHT){
                 moved = true;
 
-                moveSnake(UP); 
+                moveSnake(UP);
 
                 yCam = map_half_length;
                 xCam = part_coords[0][0];
-                break;     
+                break;
             }
         }
 
@@ -434,7 +432,7 @@ void special(int key, int x, int y){
                 moveSnake(RIGHT);
                 xCam = map_half_length;
                 yCam = part_coords[0][1];
-                
+
                 break;
             }
             if(direction == DOWN){
@@ -443,7 +441,7 @@ void special(int key, int x, int y){
                 moveSnake(LEFT);
                 xCam = -map_half_length;
                 yCam = part_coords[0][1];
-                break;   
+                break;
             }
             if(direction == LEFT){
                 moved = true;
@@ -451,7 +449,7 @@ void special(int key, int x, int y){
                 moveSnake(UP);
                 yCam = map_half_length;
                 xCam = part_coords[0][0];
-                break;      
+                break;
             }
             if(direction == RIGHT){
                 moved = true;
@@ -459,14 +457,14 @@ void special(int key, int x, int y){
                 moveSnake(DOWN);
                 yCam = -map_half_length;
                 xCam = part_coords[0][0];
-                break;      
+                break;
             }
         }
     }
 }
 
 void reshape(GLsizei width, GLsizei height){
-    
+
 
     // Make the window non-resizable so we don't have to worry about size changes
     //glutReshapeWindow(600, 600);
@@ -485,7 +483,7 @@ void reshape(GLsizei width, GLsizei height){
   glViewport( 0, 0, width, height );
 
     gluPerspective(76.0f, 1.0f, 0.0f, 80.0f);*/
-  
+
 
 }
 
