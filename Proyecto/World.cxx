@@ -119,5 +119,37 @@ void World::drawWalls()
       glVertex3f(-31.0f,-31.0f,-40.0f);
       glVertex3f(31.0f,-31.0f,-40.0f);
     glEnd();
+
+    glColor3f(0.0f,0.0f,1.0f);
+    glBegin(GL_LINE_LOOP);
+      glVertex3f(31.0f,31.0f,-40.0f);
+      glVertex3f(-31.0f,31.0f,-40.0f);
+      glVertex3f(-31.0f,31.0f,-30.0f);
+      glVertex3f(31.0f,31.0f,-30.0f);
+    glEnd();
+    glBegin(GL_LINE_LOOP);
+      glVertex3f(-31.0f,31.0f,-40.0f);
+      glVertex3f(-31.0f,-31.0f,-40.0f);
+      glVertex3f(-31.0f,-31.0f,-30.0f);
+      glVertex3f(-31.0f,31.0f,-30.0f);
+    glEnd();
+    glBegin(GL_LINE_LOOP);
+      glVertex3f(-31.0f,-31.0f,-40.0f);
+      glVertex3f(31.0f,-31.0f,-40.0f);
+      glVertex3f(31.0f,-31.0f,-30.0f);
+      glVertex3f(-31.0f,-31.0f,-30.0f);
+    glEnd();
+    glBegin(GL_LINE_LOOP);
+      glVertex3f(31.0f,31.0f,-40.0f);
+      glVertex3f(31.0f,31.0f,-30.0f);
+      glVertex3f(31.0f,-31.0f,-30.0f);
+      glVertex3f(31.0f,-31.0f,-40.0f);
+    glEnd();
+    glBegin(GL_LINE_LOOP);
+      glVertex3f(31.0f,31.0f,-40.0f);
+      glVertex3f(-31.0f,31.0f,-40.0f);
+      glVertex3f(-31.0f,-31.0f,-40.0f);
+      glVertex3f(31.0f,-31.0f,-40.0f);
+    glEnd();
   glPopMatrix();
 }
