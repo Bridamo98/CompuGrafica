@@ -97,7 +97,7 @@ void moveSnake( int new_direction )
      part_coords[0][1] + delta_y == food_coords[1]){
       score += 50;
       growth_stage++;
-      food_available = false;
+      food.setEaten(false);
     }
 
   new_head[0] = part_coords[0][0] + delta_x;
