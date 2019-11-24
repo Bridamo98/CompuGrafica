@@ -9,8 +9,6 @@
 #define RIGHT 4
 
 
-Food food;
-
 const float map_half_length = 30.0f;
 GLUquadricObj* fillObject = nullptr;
 
@@ -32,37 +30,7 @@ int growth_stage = 0;
 const int growth = 2;
 
 World mundo;
-
-// ----------------------------------------------------------------------
-void spawnFood( )
-{
-  if(food_available){
-        return;
-    }
-
-    int temp_food_coords[2];
-    bool collides;
-    do {
-        collides = false;
-
-        // Produce a temporary random coordinate
-        temp_food_coords[0] = 2 * (rand() % ((int) map_half_length + 1)) - (int) map_half_length;
-        temp_food_coords[1] = 2 * (rand() % ((int) map_half_length + 1)) - (int) map_half_length;
-
-        // Does it collide with the snake?
-        for(unsigned int a = 0; a < part_coords.size(); a++){
-            if(temp_food_coords[0] == part_coords[a][0] && temp_food_coords[1] == part_coords[a][1]){
-                collides = true;
-            }
-        }
-    } while(collides);
-
-    food_coords[0] = temp_food_coords[0];
-    food_coords[1] = temp_food_coords[1];
-
-    food_available = true;
-}
-
+Food food;
 
 // ----------------------------------------------------------------------
 void moveSnake( int new_direction )
@@ -180,7 +148,7 @@ void display( )
 
   glLoadIdentity( );
 
-  gluLookAt( part_coords[0][0], part_coords[0][1], -20, xCam, yCam, -40, 0, 0, 1 );
+  gluLookAt( part_coords[0][0], part_coords[0][1], -20,xCam, yCam, -40, 0, 0, 1 );
 
   glPushMatrix();
       glColor3f(0.0f,0.0f,1.0f);
@@ -206,7 +174,7 @@ void display( )
   glPopMatrix();
 
   glPushMatrix();
-  spawnFood();
+  food.spawnFood(map_half_length,part_coords,food_coords);
   glPopMatrix();
 
   glPushMatrix();
@@ -350,7 +318,6 @@ void moveSnakeAuto( int value )
 // ----------------------------------------------------------------------
 int main(int argc, char** argv)
 {
-
   glutInit(&argc, argv);
 
    glutInitWindowSize(800, 800);
