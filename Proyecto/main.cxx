@@ -11,6 +11,11 @@
 
 const float map_half_length = 30.0f;
 GLUquadricObj* fillObject = nullptr;
+GLfloat light0_position[] = {1.0,1.0,1.0,0.0};
+GLfloat mat1_diffuse[] = {1.0,0.0,0.0,1.0};
+
+GLfloat light1_position[] = {1.0,1.0,1.0,0.0};
+GLfloat mat2_diffuse[] = {0.0,1.0,0.0,1.0};
 
 GLsizei w, h;
 
@@ -170,7 +175,16 @@ void display( )
   glPopMatrix();
 
   glPushMatrix();
+  light0_position[0] = part_coords[0][0];
+  light0_position[1] = part_coords[0][1];
+  light0_position[2] = -40.0f;
+  glLightfv(GL_LIGHT1, GL_POSITION, light1_position);
+  glLightfv(GL_LIGHT1, GL_DIFFUSE, mat2_diffuse);
+  glEnable(GL_LIGHT1);
+  glEnable(GL_LIGHTING);
   mundo.displaySnake( part_coords );
+  glDisable(GL_LIGHTING);
+  glDisable(GL_LIGHT1);
   glPopMatrix();
 
   glPushMatrix();
@@ -181,7 +195,16 @@ void display( )
   food.setPos_x(food_coords[0]);
   food.setPos_y(food_coords[1]);
   food.setPos_z(-40.0f);
+  light0_position[0] = food_coords[0];
+  light0_position[1] = food_coords[1];
+  light0_position[2] = -40.0f;
+  glLightfv(GL_LIGHT0, GL_POSITION, light0_position);
+  glLightfv(GL_LIGHT0, GL_DIFFUSE, mat1_diffuse);
+  glEnable(GL_LIGHT0);
+  glEnable(GL_LIGHTING);
   mundo.displayFood( food );
+  glDisable(GL_LIGHTING);
+  glDisable(GL_LIGHT0);
   glPopMatrix();
 
   glutSwapBuffers();
@@ -337,8 +360,6 @@ int main(int argc, char** argv)
 
        row.push_back(0.0f);
        row.push_back((map_half_length + 2.0f + (initSize * 2)) - (a * 2));
-   //    cout<<(map_half_length + 2.0f + (initSize * 2)) - (a * 2)<<endl;
-
        part_coords.push_front(row);
    }
    xCam = part_coords[0][0];

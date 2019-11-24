@@ -1,5 +1,8 @@
 #include "Food.h"
 
+GLfloat mat_specular[] = {1.0,1.0,1.0,1.0};
+GLfloat mat_shininess[] = {100.0};
+
 // ----------------------------------------------------------------------
 Food::Food( )
   : eaten ( false ),
@@ -72,6 +75,9 @@ void Food::drawFood()
   glPushMatrix();
   glTranslatef(this->pos_x, this->pos_y, this->pos_z);
   glColor3f(1.0f, 0.0f, 0.0f);
+  glColorMaterial(GL_FRONT, GL_DIFFUSE);
+  glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
+  glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
   glutSolidCube(2.0f);
   glPopMatrix();
 }
