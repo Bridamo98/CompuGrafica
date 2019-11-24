@@ -28,7 +28,6 @@ public:
   void setPos_z( int pos_z );
 
   void drawFood();
-  void spawnFood( const float map_half_length, std::deque< std::deque<float> > part_coords, int food_coords[2] );
 };
 
 #endif //FOOD_H_INCLUDED
