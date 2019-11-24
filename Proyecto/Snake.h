@@ -1,23 +1,22 @@
 #ifndef SNAKE_H_INCLUDED
 #define SNAKE_H_INCLUDED
+#include <deque>
+#include <GL/glut.h>
+#include <iostream>
 
 class Snake
 {
 
 private:
-  int length;
-  int pos_x;
-  int pos_y;
+  std::deque< std::deque<float> > part_coords;
 
 public:
   Snake( );
-  Snake( int lengthP, int pos_xP, int pos_yP );
-  const int getLength()const;
-  const int getPos_x()const;
-  const int getPos_y()const;
-  void setLength( const int& length );
-  void setPos_x( const int& pos_x );
-  void setPos_y( const int& pos_y );
+  Snake( std::deque< std::deque<float> > part_coordsP );
+  std::deque< std::deque<float> > getPart_Coords();
+  void setPart_Coords( std::deque< std::deque<float> > part_Coords );
+
+  void drawSnake( std::deque< std::deque<float> > part_Coords );
 };
 
 #endif //SNAKE_H_INCLUDED

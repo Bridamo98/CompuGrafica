@@ -1,34 +1,37 @@
 #ifndef WORLD_H_INCLUDED
 #define WORLD_H_INCLUDED
-#include <vector>
+#include <deque>
+#include <deque>
+#include <GL/glut.h>
+#include <sstream>
+#include <iostream>
 #include "Food.h"
-#include "Obstacle.h"
 #include "Snake.h"
+
+#define UP    1
+#define DOWN  2
+#define LEFT  3
+#define RIGHT 4
 
 class World
 {
 
 private:
-  std::vector < Food > foods;
-  std::vector < Obstacle > obstacles;
+  int direction;
+  Food food;
   Snake snake;
-  int space;
 
 public:
   World( );
-  World( std::vector < Food > foods, std::vector < Obstacle > obstacles,
-        std::vector < Snake > snake, int space);
-  const std::vector < Food > getFoods( )const;
-  const std::vector < Obstacle > getObstacles( )const;
-  const Snake getSnake( )const;
-  const int getSpace( )const;
-  void setFoods( const bool& eaten, int& pos_x, int& pos_y );
-  void setSnake( const int& length );
-  void setSpace( const int& space );
-  void displayBoard();
-  void displayFoods();
-  void displayObstacles();
-  void displaySnake();
+  World( Food food, Snake snake, int direction );
+  Food getFood( );
+  Snake getSnake( );
+  void setSnake( std::deque< std::deque<float> > part_coords );
+  void displayFood( Food food );
+  void displaySnake( std::deque< std::deque<float> > part_Coords );
+  void drawBitmapText( char* text, float x, float y, float z);
+  void drawControls( const float map_half_length );
+  void drawScore( int score, std::deque< std::deque<float> > part_coords, float map_half_length );
 };
 
 #endif //WORLD_H_INCLUDED

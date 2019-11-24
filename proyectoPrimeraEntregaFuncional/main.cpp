@@ -32,7 +32,9 @@
 #define LEFT  3//ESTO VA
 #define RIGHT 4//ESTO VA
 
-
+static GLfloat light0_position[] = {1.0,1.0,1.0,0.0};
+static GLfloat mat_specular[] = {1.0,1.0,1.0,1.0};
+static GLfloat mat_shininess[] = {100.0};
 
 using namespace std;
 
