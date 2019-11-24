@@ -85,3 +85,39 @@ void World::drawScore( int score, std::deque< std::deque<float> > part_coords, f
   drawBitmapText((char*) score_string.str().c_str(), -map_half_length + 1.0f, map_half_length - 2.0f, -39.5f);
   drawBitmapText((char*) length_string.str().c_str(), -map_half_length + 1.0f, map_half_length - 4.0f, -39.5f);
 }
+void World::drawWalls()
+{
+  glPushMatrix();
+    glColor3f(0.5f,0.5f,0.5f);
+    glBegin(GL_POLYGON);
+      glVertex3f(31.0f,31.0f,-40.0f);
+      glVertex3f(-31.0f,31.0f,-40.0f);
+      glVertex3f(-31.0f,31.0f,-30.0f);
+      glVertex3f(31.0f,31.0f,-30.0f);
+    glEnd();
+    glBegin(GL_POLYGON);
+      glVertex3f(-31.0f,31.0f,-40.0f);
+      glVertex3f(-31.0f,-31.0f,-40.0f);
+      glVertex3f(-31.0f,-31.0f,-30.0f);
+      glVertex3f(-31.0f,31.0f,-30.0f);
+    glEnd();
+    glBegin(GL_POLYGON);
+      glVertex3f(-31.0f,-31.0f,-40.0f);
+      glVertex3f(31.0f,-31.0f,-40.0f);
+      glVertex3f(31.0f,-31.0f,-30.0f);
+      glVertex3f(-31.0f,-31.0f,-30.0f);
+    glEnd();
+    glBegin(GL_POLYGON);
+      glVertex3f(31.0f,31.0f,-40.0f);
+      glVertex3f(31.0f,31.0f,-30.0f);
+      glVertex3f(31.0f,-31.0f,-30.0f);
+      glVertex3f(31.0f,-31.0f,-40.0f);
+    glEnd();
+    glBegin(GL_POLYGON);
+      glVertex3f(31.0f,31.0f,-40.0f);
+      glVertex3f(-31.0f,31.0f,-40.0f);
+      glVertex3f(-31.0f,-31.0f,-40.0f);
+      glVertex3f(31.0f,-31.0f,-40.0f);
+    glEnd();
+  glPopMatrix();
+}

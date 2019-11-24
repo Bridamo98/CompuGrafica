@@ -32,6 +32,7 @@ public:
   void drawBitmapText( char* text, float x, float y, float z);
   void drawControls( const float map_half_length );
   void drawScore( int score, std::deque< std::deque<float> > part_coords, float map_half_length );
+  void drawWalls();
 };
 
 #endif //WORLD_H_INCLUDED

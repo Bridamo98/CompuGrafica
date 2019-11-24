@@ -155,6 +155,8 @@ void display( )
 
   gluLookAt( part_coords[0][0], part_coords[0][1], -20,xCam, yCam, -40, 0, 0, 1 );
 
+  mundo.drawWalls();
+
   glPushMatrix();
       glColor3f(0.0f,0.0f,1.0f);
       glLineWidth(2.0);
