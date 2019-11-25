@@ -5,6 +5,8 @@
 #include <GL/glut.h>
 #include <sstream>
 #include <iostream>
+#include <stdlib.h>
+#include <time.h>
 #include "Food.h"
 #include "Snake.h"
 
@@ -27,7 +29,7 @@ public:
   Food getFood( );
   Snake getSnake( );
   void setSnake( std::deque< std::deque<float> > part_coords );
-  void displayFood( Food food );
+  void displayFood( Food food, int type );
   void displaySnake( std::deque< std::deque<float> > part_Coords );
   void drawBitmapText( char* text, float x, float y, float z);
   void drawControls( const float map_half_length );

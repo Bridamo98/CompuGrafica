@@ -27,6 +27,7 @@ bool rotating=false;
 float r, AngIn, AngFin, deltaAng, xCamFin, yCamFin;
 
 int direction = DOWN;
+int type = 1;
 bool moved = false;
 const int move_speed = 200;
 
@@ -107,7 +108,13 @@ void moveSnake( int new_direction )
 
   if(part_coords[0][0] + delta_x == food_coords[0] &&
      part_coords[0][1] + delta_y == food_coords[1]){
-      score += 50;
+       if( type == 1 )
+        score += 50;
+       else if( type == 2 )
+        score += 100;
+       else if( type == 3 )
+        score += 150;
+      type = 1 + rand() % 3;
       growth_stage++;
       food.setEaten(false);
     }
@@ -223,7 +230,7 @@ void display( )
   glLightfv(GL_LIGHT0, GL_DIFFUSE, mat1_diffuse);
   glEnable(GL_LIGHT0);
   glEnable(GL_LIGHTING);
-  mundo.displayFood( food );
+  mundo.displayFood( food, type );
   glDisable(GL_LIGHTING);
   glDisable(GL_LIGHT0);
   glPopMatrix();
@@ -274,7 +281,7 @@ void special( int key, int x, int y){
                 xCamFin = -map_half_length;
                 yCamFin = part_coords[0][1];
                 moveSnake(LEFT);
-                
+
                 break;
             }
             if(direction == DOWN){
@@ -295,12 +302,12 @@ void special( int key, int x, int y){
                 AngIn = 180.0f;
                 AngFin = 270.0f;
                 deltaAng = 45.0f;
-                
+
                 moved = true;
                 yCamFin = -map_half_length;
                 xCamFin = part_coords[0][0];
                 moveSnake(DOWN);
-                
+
                 break;
             }
             if(direction == RIGHT){
@@ -308,12 +315,12 @@ void special( int key, int x, int y){
                 AngIn = 0.0f;
                 AngFin = 90.0f;
                 deltaAng = 45.0f;
-                
+
                 moved = true;
                 yCamFin = map_half_length;
                 xCamFin = part_coords[0][0];
                 moveSnake(UP);
-                
+
                 break;
             }
         }
@@ -321,7 +328,7 @@ void special( int key, int x, int y){
         case GLUT_KEY_RIGHT:{
           rotating = true;
             if(direction == UP){
-                
+
                 r = map_half_length - part_coords[0][1];
                 AngIn = 90.0f;
                 AngFin = 0.0f;
@@ -331,7 +338,7 @@ void special( int key, int x, int y){
                 xCamFin = map_half_length;
                 yCamFin = part_coords[0][1];
                 moveSnake(RIGHT);
-                
+
 
                 break;
             }
@@ -345,7 +352,7 @@ void special( int key, int x, int y){
                 xCamFin = -map_half_length;
                 yCamFin = part_coords[0][1];
                 moveSnake(LEFT);
-                
+
                 break;
             }
             if(direction == LEFT){
@@ -353,12 +360,12 @@ void special( int key, int x, int y){
                 AngIn = 180.0f;
                 AngFin = 90.0f;
                 deltaAng = -45.0f;
-                
+
                 moved = true;
                 yCamFin = map_half_length;
                 xCamFin = part_coords[0][0];
                 moveSnake(UP);
-                
+
                 break;
             }
             if(direction == RIGHT){
@@ -371,7 +378,7 @@ void special( int key, int x, int y){
                 yCamFin = -map_half_length;
                 xCamFin = part_coords[0][0];
                 moveSnake(DOWN);
-                
+
                 break;
             }
         }

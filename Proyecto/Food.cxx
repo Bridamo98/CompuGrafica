@@ -70,7 +70,7 @@ void Food::setPos_z( int pos_z )
 }
 
 // ----------------------------------------------------------------------
-void Food::drawFood()
+void Food::drawFood(int type)
 {
   glPushMatrix();
   glTranslatef(this->pos_x, this->pos_y, this->pos_z);
@@ -78,7 +78,12 @@ void Food::drawFood()
   glColorMaterial(GL_FRONT, GL_DIFFUSE);
   glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
   glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
-  glutSolidCube(2.0f);
+  if ( type == 1 )
+    glutSolidCube(2.0f);
+  else if ( type == 2 )
+    glutSolidSphere(2.0f, 50.0f, 50.0f);
+  else if ( type == 3 )
+    glutSolidCone(1, 2, 50, 50);
   glPopMatrix();
 }
 

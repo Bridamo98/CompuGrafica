@@ -34,10 +34,10 @@ void World::setSnake( std::deque< std::deque<float> > part_coords )
 
 
 // ----------------------------------------------------------------------
-void World::displayFood( Food food )
+void World::displayFood( Food food, int type )
 {
   this->food = food;
-  this->food.drawFood();
+  this->food.drawFood(type);
 }
 
 // ----------------------------------------------------------------------
