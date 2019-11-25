@@ -88,7 +88,7 @@ void Food::drawFood(int type)
 }
 
 // ----------------------------------------------------------------------
-void Food::spawnFood(const float map_half_length, std::deque< std::deque<float> > part_coords, int food_coords[2] )
+void Food::spawnFood(const float map_size, std::deque< std::deque<float> > snake_coords, int food_coords[2] )
 {
   if(this->eaten){
         return;
@@ -101,13 +101,13 @@ void Food::spawnFood(const float map_half_length, std::deque< std::deque<float> 
         collides = false;
 
         // Produce a temporary random coordinate
-        temp_food_coords[0] = 2 * (rand() % ((int) map_half_length + 1)) - (int) map_half_length;
-        temp_food_coords[1] = 2 * (rand() % ((int) map_half_length + 1)) - (int) map_half_length;
+        temp_food_coords[0] = 2 * (rand() % ((int) map_size + 1)) - (int) map_size;
+        temp_food_coords[1] = 2 * (rand() % ((int) map_size + 1)) - (int) map_size;
 
         // Does it collide with the snake?
-        for(unsigned int a = 0; a < part_coords.size(); a++){
-            if(temp_food_coords[0] == part_coords[a][0] &&
-               temp_food_coords[1] == part_coords[a][1]){
+        for(unsigned int a = 0; a < snake_coords.size(); a++){
+            if(temp_food_coords[0] == snake_coords[a][0] &&
+               temp_food_coords[1] == snake_coords[a][1]){
                 collides = true;
             }
         }

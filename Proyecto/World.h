@@ -19,22 +19,23 @@ class World
 {
 
 private:
-  int direction;
+  int dir;
   Food food;
   Snake snake;
 
 public:
   World( );
-  World( Food food, Snake snake, int direction );
+  World( Food food, Snake snake, int dir );
   Food getFood( );
   Snake getSnake( );
-  void setSnake( std::deque< std::deque<float> > part_coords );
+  void setSnake( std::deque< std::deque<float> > snake_coords );
   void displayFood( Food food, int type );
-  void displaySnake( std::deque< std::deque<float> > part_Coords );
+  void displaySnake( std::deque< std::deque<float> > snake_coords );
   void drawBitmapText( char* text, float x, float y, float z);
-  void drawControls( const float map_half_length );
-  void drawScore( int score, std::deque< std::deque<float> > part_coords, float map_half_length );
+  void drawControls( const float map_size );
+  void drawScore( int score, std::deque< std::deque<float> > snake_coords, float map_size );
   void drawWalls();
+  void paintGrid(float map_size);
 };
 
 #endif //WORLD_H_INCLUDED

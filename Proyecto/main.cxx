@@ -3,8 +3,6 @@
 
 #include "World.h"
 
-#define UNUSED(param) (void)(param)
-
 #define UP    1
 #define DOWN  2
 #define LEFT  3
@@ -13,7 +11,7 @@
 #define PI 3.14159265
 
 
-const float map_half_length = 30.0f;
+const float map_size = 30.0f;
 GLUquadricObj* fillObject = nullptr;
 GLfloat light0_position[] = {1.0,1.0,1.0,0.0};
 GLfloat mat1_diffuse[] = {1.0,0.0,0.0,1.0};
@@ -26,32 +24,32 @@ GLsizei w, h;
 bool rotating=false;
 float r, AngIn, AngFin, deltaAng, xCamFin, yCamFin;
 
-int direction = DOWN;
+int dir = DOWN;
 int type = 1;
-bool moved = false;
-const int move_speed = 200;
+bool mov = false;
+const int speed = 200;
 
 float xCam, yCam, zCam = 30.0f;
-std::deque< std::deque<float> > part_coords;
+std::deque< std::deque<float> > snake_coords;
 
-bool food_available = false;
+bool there_is_food = false;
 int food_coords[2];
 
 int score = 0;
 
-int growth_stage = 0;
-const int growth = 2;
+int stage = 0;
+const int increase = 2;
 
 World mundo;
 Food food;
 
 // ----------------------------------------------------------------------
-void moveSnake( int new_direction )
+void move( int new_dir )
 {
-  direction = new_direction;
+  dir = new_dir;
 
-  int last_part = part_coords.size() - 1;
-  std::deque<float> new_head = part_coords[last_part];
+  int last_part = snake_coords.size() - 1;
+  std::deque<float> new_head = snake_coords[last_part];
 
   float delta_x = 0.0f;
   float delta_y = 0.0f;
@@ -60,10 +58,10 @@ void moveSnake( int new_direction )
 
   int snake_part_axis = 0;
 
-  switch (direction){
+  switch (dir){
       case UP:{
           delta_y = 1.0f;
-          map_edge = map_half_length;
+          map_edge = map_size;
           snake_part_axis = 1;
 
           break;
@@ -71,7 +69,7 @@ void moveSnake( int new_direction )
 
       case DOWN:{
           delta_y = -1.0f;
-          map_edge = -map_half_length;
+          map_edge = -map_size;
           snake_part_axis = 1;
 
           break;
@@ -79,7 +77,7 @@ void moveSnake( int new_direction )
 
       case RIGHT:{
           delta_x = 1.0f;
-          map_edge = map_half_length;
+          map_edge = map_size;
           snake_part_axis = 0;
 
           break;
@@ -87,7 +85,7 @@ void moveSnake( int new_direction )
 
       case LEFT:{
           delta_x = -1.0f;
-          map_edge = -map_half_length;
+          map_edge = -map_size;
           snake_part_axis = 0;
 
           break;
@@ -95,19 +93,19 @@ void moveSnake( int new_direction )
   }
 
 
-  for(unsigned int a = 0; a < part_coords.size(); a++){
-      if(part_coords[0][0] + delta_x == part_coords[a][0] &&
-         part_coords[0][1] + delta_y == part_coords[a][1]){
+  for(unsigned int a = 0; a < snake_coords.size(); a++){
+      if(snake_coords[0][0] + delta_x == snake_coords[a][0] &&
+         snake_coords[0][1] + delta_y == snake_coords[a][1]){
           exit(0);
       }
   }
 
-  if(part_coords[0][snake_part_axis] == map_edge){
+  if(snake_coords[0][snake_part_axis] == map_edge){
       exit(0);
   }
 
-  if(part_coords[0][0] + delta_x == food_coords[0] &&
-     part_coords[0][1] + delta_y == food_coords[1]){
+  if(snake_coords[0][0] + delta_x == food_coords[0] &&
+     snake_coords[0][1] + delta_y == food_coords[1]){
        if( type == 1 )
         score += 50;
        else if( type == 2 )
@@ -115,32 +113,41 @@ void moveSnake( int new_direction )
        else if( type == 3 )
         score += 150;
       type = 1 + rand() % 3;
-      growth_stage++;
+      stage++;
       food.setEaten(false);
     }
 
-  new_head[0] = part_coords[0][0] + delta_x;
-  new_head[1] = part_coords[0][1] + delta_y;
+  new_head[0] = snake_coords[0][0] + delta_x;
+  new_head[1] = snake_coords[0][1] + delta_y;
 
-  part_coords.push_front(new_head);
+  snake_coords.push_front(new_head);
 
-  if(!growth_stage){
-      part_coords.pop_back();
-  } else if(growth_stage == growth){
-      growth_stage = 0;
+  if(!stage){
+      snake_coords.pop_back();
+  } else if(stage == increase){
+      stage = 0;
   } else {
-      growth_stage++;
+      stage++;
   }
 
   glutPostRedisplay();
 }
 
-// ----------------------------------------------------------------------
-void display( )
+void validateRotation()
 {
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-
+  if(rotating){
+    if(AngIn != AngFin){
+      xCam = r*cos(AngIn*PI/180.0f)+snake_coords[0][0];
+      yCam = r*sin(AngIn*PI/180.0f)+snake_coords[0][1];
+      AngIn = AngIn + deltaAng;
+    }else{
+      rotating = false;
+      xCam = xCamFin;
+      yCam = yCamFin;
+    }
+  }
+}
+void displayText(){
   glMatrixMode( GL_PROJECTION );
   glLoadIdentity( );
   glViewport( 0, h*0.8, w, h);
@@ -149,16 +156,18 @@ void display( )
 
   glLoadIdentity( );
 
-  gluLookAt( 0, map_half_length+20, 0,0, map_half_length+20, -40, 0, 1, 0);
+  gluLookAt( 0, map_size+20, 0,0, map_size+20, -40, 0, 1, 0);
 
   glPushMatrix();
-  mundo.drawScore( score, part_coords, map_half_length );
+  mundo.drawScore( score, snake_coords, map_size );
   glPopMatrix();
 
   glPushMatrix();
-  mundo.drawControls(map_half_length);
+  mundo.drawControls(map_size);
   glPopMatrix();
 
+}
+void displayGame(){
   glMatrixMode( GL_PROJECTION );
   glLoadIdentity( );
   glViewport( 0, 0, w, h*0.8 );
@@ -167,56 +176,30 @@ void display( )
 
   glLoadIdentity( );
 
-  if(rotating){
-    if(AngIn != AngFin){
-      xCam = r*cos(AngIn*PI/180.0f)+part_coords[0][0];
-      yCam = r*sin(AngIn*PI/180.0f)+part_coords[0][1];
-      AngIn = AngIn + deltaAng;
-    }else{
-      rotating = false;
-      xCam = xCamFin;
-      yCam = yCamFin;
-    }
-  }
+  validateRotation();
+  
 
-  gluLookAt( part_coords[0][0], part_coords[0][1], -38.0f,xCam, yCam, -38.0f, 0, 0, 1 );
+  gluLookAt( snake_coords[0][0], snake_coords[0][1], -38.0f,xCam, yCam, -38.0f, 0, 0, 1 );
 
   mundo.drawWalls();
 
-  glPushMatrix();
-      glColor3f(0.0f,0.0f,1.0f);
-      glLineWidth(2.0);
-      for (float i = -31.0f; i <= 31.0f; i = i + 2.0f)
-      {
-          glBegin(GL_LINE_LOOP);
-              glVertex3f(i, 31.0f, -40.0f);
-              glVertex3f(i, -31.0f, -40.0f);
-          glEnd();
-      }
-      for (float j = -31.0f; j <= 31.0f; j = j + 2.0f)
-      {
-          glBegin(GL_LINE_LOOP);
-              glVertex3f(31.0f, j, -40.0f);
-              glVertex3f(-31.0f, j, -40.0f);
-          glEnd();
-      }
-  glPopMatrix();
+  mundo.paintGrid(map_size);
 
   glPushMatrix();
-  light0_position[0] = part_coords[0][0];
-  light0_position[1] = part_coords[0][1];
+  light0_position[0] = snake_coords[0][0];
+  light0_position[1] = snake_coords[0][1];
   light0_position[2] = -40.0f;
   glLightfv(GL_LIGHT1, GL_POSITION, light1_position);
   glLightfv(GL_LIGHT1, GL_DIFFUSE, mat2_diffuse);
   glEnable(GL_LIGHT1);
   glEnable(GL_LIGHTING);
-  mundo.displaySnake( part_coords );
+  mundo.displaySnake( snake_coords );
   glDisable(GL_LIGHTING);
   glDisable(GL_LIGHT1);
   glPopMatrix();
 
   glPushMatrix();
-  food.spawnFood(map_half_length,part_coords,food_coords);
+  food.spawnFood(map_size,snake_coords,food_coords);
   glPopMatrix();
 
   glPushMatrix();
@@ -234,6 +217,15 @@ void display( )
   glDisable(GL_LIGHTING);
   glDisable(GL_LIGHT0);
   glPopMatrix();
+}
+// ----------------------------------------------------------------------
+void display( )
+{
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+  displayText();
+
+  displayGame();
 
   glutSwapBuffers();
 }
@@ -249,12 +241,9 @@ void initGL()
 // ----------------------------------------------------------------------
 void keyboard( unsigned char key, int x, int y)
 {
-    UNUSED(x);
-    UNUSED(y);
 
     switch(key){
 
-        // Escape key
         case 27:
         case 'q':{
             exit(0);
@@ -264,62 +253,60 @@ void keyboard( unsigned char key, int x, int y)
 
 // ----------------------------------------------------------------------
 void special( int key, int x, int y){
-    UNUSED(x);
-    UNUSED(y);
 
     switch(key){
         case GLUT_KEY_LEFT:{
           rotating = true;
-            if(direction == UP){
-                r = map_half_length - part_coords[0][1];
+            if(dir == UP){
+                r = map_size - snake_coords[0][1];
                 AngIn = 90.0f;
                 AngFin = 180.0f;
                 deltaAng = 45.0f;
 
 
-                moved = true;
-                xCamFin = -map_half_length;
-                yCamFin = part_coords[0][1];
-                moveSnake(LEFT);
+                mov = true;
+                xCamFin = -map_size;
+                yCamFin = snake_coords[0][1];
+                move(LEFT);
 
                 break;
             }
-            if(direction == DOWN){
-                r = map_half_length + part_coords[0][1];
+            if(dir == DOWN){
+                r = map_size + snake_coords[0][1];
                 AngIn = 270.0f;
                 AngFin = 360.0f;
                 deltaAng = 45.0f;
 
-                moved = true;
-                xCamFin = map_half_length;
-                yCamFin = part_coords[0][1];
-                moveSnake(RIGHT);
+                mov = true;
+                xCamFin = map_size;
+                yCamFin = snake_coords[0][1];
+                move(RIGHT);
                 break;
             }
-            if(direction == LEFT){
+            if(dir == LEFT){
 
-                r = map_half_length - part_coords[0][1];
+                r = map_size - snake_coords[0][1];
                 AngIn = 180.0f;
                 AngFin = 270.0f;
                 deltaAng = 45.0f;
 
-                moved = true;
-                yCamFin = -map_half_length;
-                xCamFin = part_coords[0][0];
-                moveSnake(DOWN);
+                mov = true;
+                yCamFin = -map_size;
+                xCamFin = snake_coords[0][0];
+                move(DOWN);
 
                 break;
             }
-            if(direction == RIGHT){
-                r = map_half_length + part_coords[0][1];
+            if(dir == RIGHT){
+                r = map_size + snake_coords[0][1];
                 AngIn = 0.0f;
                 AngFin = 90.0f;
                 deltaAng = 45.0f;
 
-                moved = true;
-                yCamFin = map_half_length;
-                xCamFin = part_coords[0][0];
-                moveSnake(UP);
+                mov = true;
+                yCamFin = map_size;
+                xCamFin = snake_coords[0][0];
+                move(UP);
 
                 break;
             }
@@ -327,57 +314,57 @@ void special( int key, int x, int y){
 
         case GLUT_KEY_RIGHT:{
           rotating = true;
-            if(direction == UP){
+            if(dir == UP){
 
-                r = map_half_length - part_coords[0][1];
+                r = map_size - snake_coords[0][1];
                 AngIn = 90.0f;
                 AngFin = 0.0f;
                 deltaAng = -45.0f;
 
-                moved = true;
-                xCamFin = map_half_length;
-                yCamFin = part_coords[0][1];
-                moveSnake(RIGHT);
+                mov = true;
+                xCamFin = map_size;
+                yCamFin = snake_coords[0][1];
+                move(RIGHT);
 
 
                 break;
             }
-            if(direction == DOWN){
-                r = map_half_length + part_coords[0][1];
+            if(dir == DOWN){
+                r = map_size + snake_coords[0][1];
                 AngIn = 270.0f;
                 AngFin = 180.0f;
                 deltaAng = -45.0f;
 
-                moved = true;
-                xCamFin = -map_half_length;
-                yCamFin = part_coords[0][1];
-                moveSnake(LEFT);
+                mov = true;
+                xCamFin = -map_size;
+                yCamFin = snake_coords[0][1];
+                move(LEFT);
 
                 break;
             }
-            if(direction == LEFT){
-                r = map_half_length - part_coords[0][1];
+            if(dir == LEFT){
+                r = map_size - snake_coords[0][1];
                 AngIn = 180.0f;
                 AngFin = 90.0f;
                 deltaAng = -45.0f;
 
-                moved = true;
-                yCamFin = map_half_length;
-                xCamFin = part_coords[0][0];
-                moveSnake(UP);
+                mov = true;
+                yCamFin = map_size;
+                xCamFin = snake_coords[0][0];
+                move(UP);
 
                 break;
             }
-            if(direction == RIGHT){
-                r = map_half_length + part_coords[0][1];
+            if(dir == RIGHT){
+                r = map_size + snake_coords[0][1];
                 AngIn = 0.0f;
                 AngFin = -90.0f;
                 deltaAng = -45.0f;
 
-                moved = true;
-                yCamFin = -map_half_length;
-                xCamFin = part_coords[0][0];
-                moveSnake(DOWN);
+                mov = true;
+                yCamFin = -map_size;
+                xCamFin = snake_coords[0][0];
+                move(DOWN);
 
                 break;
             }
@@ -395,17 +382,14 @@ void reshape(GLsizei width, GLsizei height)
 }
 
 // ----------------------------------------------------------------------
-void moveSnakeAuto( int value )
+void moveAuto( int value )
 {
-  if(!moved){
-      UNUSED(value);
-
-      moveSnake(direction);
+  if(!mov){
+      move(dir);
   } else {
-      moved = false;
+      mov = false;
   }
-
-  glutTimerFunc(move_speed, moveSnakeAuto, 0);
+  glutTimerFunc(speed, moveAuto, 0);
 }
 
 // ----------------------------------------------------------------------
@@ -420,20 +404,19 @@ int main(int argc, char** argv)
    glutKeyboardFunc(keyboard);
    glutReshapeFunc(reshape);
    glutSpecialFunc(special);
-   glutTimerFunc(move_speed, moveSnakeAuto, 0);
+   glutTimerFunc(speed, moveAuto, 0);
 
    const int initSize = 3;
 
-   // Specify the coordinates to each part of the snake
    for(int a = 1; a <= initSize; a++){
        std::deque<float> row;
 
-       row.push_back(0.0f);
-       row.push_back((map_half_length + 2.0f + (initSize * 2)) - (a * 2));
-       part_coords.push_front(row);
+       row.push_back(0.0f);//xCoords
+       row.push_back((map_size + 2.0f + (initSize * 2)) - (a * 2));//yCoords
+       snake_coords.push_front(row);
    }
-   xCam = part_coords[0][0];
-   yCam = -map_half_length;
+   xCam = snake_coords[0][0];
+   yCam = -map_size;
 
    srand(time(NULL));
 
